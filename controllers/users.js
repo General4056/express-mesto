@@ -36,10 +36,11 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUser = (req, res) => {
   User.findById(req.params.id)
-    .then(({ name, about, avatar, _id }) => {
-      if (!name) {
+    .then((user) => {
+      if (!user) {
         return res.status(404).send({ message: 'Пользователь с указанным _id не найден' });
       }
+      const { name, about, avatar, _id } = user;
       return res.status(200).send({ name, about, avatar, _id });
     })
     .catch((err) => {

@@ -36,10 +36,11 @@ module.exports.getCards = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
-    .then(({ name, link, owner, likes, createdAt, _id }) => {
-      if (!name) {
+    .then((card) => {
+      if (!card) {
         return res.status(404).send({ message: 'Карточка с указанным _id не найдена' });
       }
+      const { name, link, owner, likes, createdAt, _id } = card;
       return res.status(200).send({ name, link, owner, likes, createdAt, _id });
     })
     .catch((err) => {
@@ -56,10 +57,11 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true }
   )
-    .then(({ name, link, owner, likes, createdAt, _id }) => {
-      if (!name) {
+    .then((card) => {
+      if (!card) {
         return res.status(404).send({ message: 'Карточка с указанным _id не найдена' });
       }
+      const { name, link, owner, likes, createdAt, _id } = card;
       return res.status(200).send({ name, link, owner, likes, createdAt, _id });
     })
     .catch((err) => {
@@ -76,10 +78,11 @@ module.exports.dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true }
   )
-    .then(({ name, link, owner, likes, createdAt, _id }) => {
-      if (!name) {
+    .then((card) => {
+      if (!card) {
         return res.status(404).send({ message: 'Карточка с указанным _id не найдена' });
       }
+      const { name, link, owner, likes, createdAt, _id } = card;
       return res.status(200).send({
         name,
         link,
