@@ -12,7 +12,9 @@ module.exports.createCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError('Переданы некорректные данные при создании карточки');
+        throw new ValidationError(
+          'Переданы некорректные данные при создании карточки',
+        );
       } else {
         next(err);
       }
@@ -23,17 +25,19 @@ module.exports.createCard = (req, res, next) => {
 module.exports.getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => {
-      const outputCards = cards.map(({ name, link, owner, likes, createdAt, _id }) => {
-        const container = {
-          name,
-          link,
-          owner,
-          likes,
-          createdAt,
-          _id,
-        };
-        return container;
-      });
+      const outputCards = cards.map(
+        ({ name, link, owner, likes, createdAt, _id }) => {
+          const container = {
+            name,
+            link,
+            owner,
+            likes,
+            createdAt,
+            _id,
+          };
+          return container;
+        },
+      );
       res.status(200).send(outputCards);
     })
     .catch(next);
@@ -42,15 +46,17 @@ module.exports.getCards = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
+      if (!card) {
+        throw new NotFoundError('Карточка с указанным _id не найдена');
+      }
       if (String(card.owner) !== req.user._id) {
         throw new NotFoundError('У вас нет прав на удаление данной карточки');
       }
       return Card.findByIdAndRemove(req.params.cardId).then((card) => {
-        if (!card) {
-          throw new NotFoundError('Карточка с указанным _id не найдена');
-        }
         const { name, link, owner, likes, createdAt, _id } = card;
-        return res.status(200).send({ name, link, owner, likes, createdAt, _id });
+        return res
+          .status(200)
+          .send({ name, link, owner, likes, createdAt, _id });
       });
     })
     .catch((err) => {
@@ -67,7 +73,7 @@ module.exports.likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
-    { new: true }
+    { new: true },
   )
     .then((card) => {
       if (!card) {
@@ -90,7 +96,7 @@ module.exports.dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
-    { new: true }
+    { new: true },
   )
     .then((card) => {
       if (!card) {

@@ -3,7 +3,7 @@ const AuthorizedError = require('../errors/AuthorizedError');
 
 const secretKey = 'some-secret-key';
 
-module.exports.isAuthorized = (req, res, next) => {
+const isAuthorized = (req, res, next) => {
   const token = req.cookies.jwt;
   let payload;
   try {
@@ -14,3 +14,5 @@ module.exports.isAuthorized = (req, res, next) => {
   req.user = payload;
   return next();
 };
+
+module.exports = { isAuthorized, secretKey };
