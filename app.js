@@ -7,11 +7,8 @@ const { errors } = require('celebrate');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 const { isAuthorized } = require('./middlewares/auth');
-const { createUser, login } = require('./controllers/users');
-const {
-  loginValidation,
-  registrValidation,
-} = require('./middlewares/validators');
+const { createUser, login, logout } = require('./controllers/users');
+const { loginValidation, registrValidation } = require('./middlewares/validators');
 const PageNotFound = require('./errors/PageNotFound');
 
 const PORT = process.env.PORT || 3000;
@@ -25,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/signin', loginValidation, login);
 app.post('/signup', registrValidation, createUser);
+app.get('/signout', logout);
 
 app.use(cookieParser());
 

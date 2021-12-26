@@ -2,6 +2,7 @@ const Card = require('../models/card');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
 const CastError = require('../errors/CastError');
+const ForbiddenError = require('../errors/ForbiddenError');
 
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
@@ -12,14 +13,11 @@ module.exports.createCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError(
-          'Переданы некорректные данные при создании карточки',
-        );
+        next(new ValidationError('Переданы некорректные данные при создании карточки'));
       } else {
         next(err);
       }
-    })
-    .catch(next);
+    });
 };
 
 module.exports.getCards = (req, res, next) => {
@@ -50,7 +48,7 @@ module.exports.deleteCard = (req, res, next) => {
         throw new NotFoundError('Карточка с указанным _id не найдена');
       }
       if (String(card.owner) !== req.user._id) {
-        throw new NotFoundError('У вас нет прав на удаление данной карточки');
+        throw new ForbiddenError('У вас нет прав на удаление данной карточки');
       }
       return Card.findByIdAndRemove(req.params.cardId).then((card) => {
         const { name, link, owner, likes, createdAt, _id } = card;
@@ -61,12 +59,11 @@ module.exports.deleteCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new CastError('Передан невалидный _id карточки');
+        next(new CastError('Передан невалидный _id карточки'));
       } else {
         next(err);
       }
-    })
-    .catch(next);
+    });
 };
 
 module.exports.likeCard = (req, res, next) => {
@@ -84,12 +81,11 @@ module.exports.likeCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new CastError('Передан невалидный _id карточки');
+        next(new CastError('Передан невалидный _id карточки'));
       } else {
         next(err);
       }
-    })
-    .catch(next);
+    });
 };
 
 module.exports.dislikeCard = (req, res, next) => {
@@ -114,10 +110,9 @@ module.exports.dislikeCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new CastError('Передан невалидный _id карточки');
+        next(new CastError('Передан невалидный _id карточки'));
       } else {
         next(err);
       }
-    })
-    .catch(next);
+    });
 };
