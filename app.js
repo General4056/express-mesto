@@ -9,6 +9,7 @@ const cardRouter = require('./routes/cards');
 const { isAuthorized } = require('./middlewares/auth');
 const { createUser, login, logout } = require('./controllers/users');
 const { loginValidation, registrValidation } = require('./middlewares/validators');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const PageNotFound = require('./errors/PageNotFound');
 
 const PORT = process.env.PORT || 3000;
@@ -19,6 +20,8 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(requestLogger);
 
 app.post('/signin', loginValidation, login);
 app.post('/signup', registrValidation, createUser);
@@ -35,6 +38,8 @@ app.use('/', userRouter);
 app.use((req, res, next) => {
   next(new PageNotFound('Страница не найдена'));
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 
