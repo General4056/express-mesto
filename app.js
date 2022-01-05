@@ -11,7 +11,6 @@ const { createUser, login, logout } = require('./controllers/users');
 const { loginValidation, registrValidation } = require('./middlewares/validators');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const PageNotFound = require('./errors/PageNotFound');
-const { cors } = require('./middlewares/cors');
 
 const PORT = process.env.PORT || 3000;
 
@@ -23,8 +22,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
-
-app.use(cors);
 
 app.post('/signin', loginValidation, login);
 app.post('/signup', registrValidation, createUser);
