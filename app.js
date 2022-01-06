@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -12,6 +13,8 @@ const { loginValidation, registrValidation } = require('./middlewares/validators
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { cors } = require('./middlewares/cors');
 const PageNotFound = require('./errors/PageNotFound');
+
+require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
 
@@ -28,7 +31,7 @@ app.use(requestLogger);
 
 app.post('/signin', loginValidation, login);
 app.post('/signup', registrValidation, createUser);
-app.get('/signout', logout);
+// app.get('/signout', logout);
 
 app.use(cookieParser());
 

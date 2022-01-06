@@ -142,6 +142,6 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.logout = (req, res) => {
-  res.status(200).clearCookie('jwt').send({ message: 'Выход выполнен успешно' });
-};
+// module.exports.logout = (req, res) => {
+//   res.status(200).clearCookie('jwt').send({ message: 'Выход выполнен успешно' });
+// };

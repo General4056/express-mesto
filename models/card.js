@@ -16,7 +16,7 @@ const cardSchema = new mongoose.Schema({
     },
     required: true,
     minlength: 2,
-    maxlength: 30,
+    maxlength: 256,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
