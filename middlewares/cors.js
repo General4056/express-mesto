@@ -1,6 +1,9 @@
 const allowedCors = [
-  'http://General4056-mesto.nomoredomains.rocks',
-  'localhost:3000'
+  'http://general4056-mesto.nomoredomains.rocks',
+  'http://localhost:3000',
+  'https://localhost:3000',
+  'http://localhost:3001',
+  'https://localhost:3001'
 ];
 
 const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
@@ -9,6 +12,7 @@ module.exports.cors =  (req, res, next) => {
   const { origin } = req.headers;
   const { method } = req;
   const requestHeaders = req.headers['access-control-request-headers'];
+  console.log(requestHeaders, method)
 
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);

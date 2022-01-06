@@ -19,12 +19,12 @@ mongoose.connect('mongodb://localhost:27017/mestodb');
 
 const app = express();
 
+app.use(cors);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
-
-app.use(cors);
 
 app.post('/signin', loginValidation, login);
 app.post('/signup', registrValidation, createUser);
