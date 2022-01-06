@@ -1,5 +1,6 @@
 const allowedCors = [
-  'http://general4056-mesto.nomoredomains.rocks',
+  'http://General4056-mesto.nomoredomains.rocks',
+  'https://General4056-mesto.nomoredomains.rocks',
   'http://localhost:3000',
   'https://localhost:3000',
   'http://localhost:3001',
