@@ -1,6 +1,6 @@
 const allowedCors = [
-  'http://general4056-mesto.nomoredomains.rocks',
   'https://general4056-mesto.nomoredomains.rocks',
+  'http://general4056-mesto.nomoredomains.rocks',
   'http://localhost:3000',
   'https://localhost:3000',
   'http://localhost:3001',
@@ -14,9 +14,9 @@ module.exports.cors =  (req, res, next) => {
   const { method } = req;
   const requestHeaders = req.headers['access-control-request-headers'];
 
-  if (allowedCors.includes(origin)) {
+  // if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', "*");
-  }
+  // }
 
   if (method === 'OPTIONS') {
     // разрешаем кросс-доменные запросы любых типов (по умолчанию)
