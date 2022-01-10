@@ -9,7 +9,7 @@ module.exports.createCard = (req, res, next) => {
   const { _id } = req.user;
   Card.create({ name, link, owner: _id })
     .then(({ name, link, owner, likes, createdAt, _id }) => {
-      console.log(2)
+      console.log(2);
       res.status(201).send({ name, link, owner, likes, createdAt, _id });
     })
     .catch((err) => {
